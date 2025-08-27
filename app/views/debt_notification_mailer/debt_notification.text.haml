@@ -1,0 +1,39 @@
+Oznámení o neuhrazené pohledávce
+
+Vážený zákazníku,
+
+rádi bychom Vás informovali o neuhrazené pohledávce ve výši #{number_to_currency(@debt.amount, unit: "Kč", separator: ",", delimiter: " ")} s datem splatnosti #{l(@debt.due_date, format: :long)}.
+
+Popis pohledávky:
+#{@debt.description.to_s}
+
+Pro zobrazení detailů této pohledávky klikněte na následující odkaz:
+#{@debt_url}
+
+V případě dotazů nebo potřeby domluvit splátkový kalendář nás neváhejte kontaktovat.
+
+Informace o ochraně soukromých údajů najdete na našich stránkách.
+
+S pozdravem,
+Váš tým
+
+= "="*50
+
+Debt Notification
+
+Dear customer,
+
+We would like to inform you about an outstanding debt of #{number_to_currency(@debt.amount, unit: "CZK ", format: "%u%n")} with due date #{l(@debt.due_date, format: :long)}.
+
+Debt description:
+#{@debt.description.to_s}
+
+To view details of this debt, please click the following link:
+#{@debt_url}
+
+If you have any questions or need to arrange a payment plan, please don't hesitate to contact us.
+
+Privacy information can be found on our website.
+
+Best regards,
+Your team

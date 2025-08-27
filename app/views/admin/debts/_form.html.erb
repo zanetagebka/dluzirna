@@ -1,0 +1,46 @@
+<%= form_with model: [:admin, debt], local: true, class: "row g-3" do |f| %>
+  <% if debt.errors.any? %>
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <h6>Opravte následující chyby:</h6>
+        <ul class="mb-0">
+          <% debt.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-md-6">
+    <%= f.label :customer_email, "E-mail zákazníka", class: "form-label" %>
+    <%= f.email_field :customer_email, class: "form-control", required: true %>
+  </div>
+
+  <div class="col-md-6">
+    <%= f.label :amount, "Částka (Kč)", class: "form-label" %>
+    <%= f.number_field :amount, step: 0.01, min: 0, class: "form-control", required: true %>
+  </div>
+
+  <div class="col-md-6">
+    <%= f.label :due_date, "Datum splatnosti", class: "form-label" %>
+    <%= f.date_field :due_date, class: "form-control", required: true %>
+  </div>
+
+  <div class="col-12">
+    <%= f.label :description, "Popis pohledávky", class: "form-label" %>
+    <%= f.rich_text_area :description, 
+                          class: "form-control", 
+                          placeholder: "Detailní popis pohledávky, faktura č., důvod dluhu apod." %>
+  </div>
+
+
+  <div class="col-12">
+    <div class="d-grid gap-2 d-md-flex">
+      <%= f.submit debt.new_record? ? "Vytvořit pohledávku" : "Aktualizovat pohledávku", 
+          class: "btn btn-primary me-md-2" %>
+      <%= link_to "Zrušit", admin_debts_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+
+<% end %>

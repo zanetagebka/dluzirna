@@ -1,0 +1,173 @@
+cs:
+  activerecord:
+    models:
+      debt: "Pohledávka"
+      user: "Uživatel"
+    attributes:
+      debt:
+        amount: "Částka"
+        due_date: "Datum splatnosti"
+        customer_email: "E-mail zákazníka"
+        description: "Popis"
+        status: "Stav"
+        token: "Token"
+        created_at: "Vytvořeno"
+        updated_at: "Aktualizováno"
+        notified_at: "Notifikováno"
+        viewed_at: "Zobrazeno"
+      user:
+        email: "E-mail"
+        password: "Heslo"
+        password_confirmation: "Potvrzení hesla"
+        role: "Role"
+        confirmed_at: "Potvrzeno"
+        created_at: "Vytvořeno"
+        updated_at: "Aktualizováno"
+    
+    enums:
+      debt:
+        status:
+          pending: "Čekající"
+          notified: "Notifikováno"
+          viewed: "Zobrazeno"
+          registered: "Registrováno"
+          resolved: "Vyřešeno"
+      user:
+        role:
+          admin: "Administrátor"
+          customer: "Zákazník"
+
+  # Application strings
+  app:
+    name: "Dlužírna"
+    tagline: "Správa pohledávek"
+    
+  # Navigation
+  navigation:
+    home: "Domů"
+    dashboard: "Dashboard"
+    debts: "Pohledávky"
+    my_debts: "Moje pohledávky"
+    login: "Přihlášení"
+    logout: "Odhlášení"
+    register: "Registrace"
+    profile: "Profil"
+    admin: "Administrace"
+    customer: "Zákazník"
+    
+  # Common actions
+  actions:
+    create: "Vytvořit"
+    edit: "Upravit"
+    update: "Aktualizovat"
+    delete: "Smazat"
+    show: "Zobrazit"
+    back: "Zpět"
+    save: "Uložit"
+    cancel: "Zrušit"
+    confirm: "Potvrdit"
+    copy: "Kopírovat"
+    send: "Odeslat"
+    
+  # Debt management
+  debts:
+    title: "Pohledávky"
+    new: "Nová pohledávka"
+    edit: "Upravit pohledávku"
+    show: "Detail pohledávky"
+    list: "Seznam pohledávek"
+    create_success: "Pohledávka byla úspěšně vytvořena."
+    update_success: "Pohledávka byla úspěšně aktualizována."
+    delete_success: "Pohledávka byla úspěšně smazána."
+    delete_confirm: "Opravdu chcete smazat tuto pohledávku?"
+    mark_resolved: "Označit jako vyřešeno"
+    mark_resolved_confirm: "Označit tuto pohledávku jako vyřešenou?"
+    public_link: "Veřejný odkaz"
+    show_public_link: "Zobrazit veřejný odkaz"
+    hide_public_link: "Skrýt veřejný odkaz"
+    copy_link: "Kopírovat odkaz"
+    link_copied: "Zkopírováno!"
+    public_link_description: "Tento odkaz můžete poslat zákazníkovi pro zobrazení pohledávky:"
+    overdue: "Po splatnosti"
+    customer_registered: "Registrován"
+    customer_unregistered: "Neregistrován"
+    
+  # Dashboard
+  dashboard:
+    title: "Dashboard"
+    statistics: "Statistiky"
+    total_debts: "Celkový počet pohledávek"
+    pending_debts: "Čekající pohledávky"
+    overdue_debts: "Pohledávky po splatnosti"
+    total_amount: "Celková částka"
+    recent_debts: "Nedávné pohledávky"
+    quick_actions: "Rychlé akce"
+    
+  # Authentication
+  auth:
+    login: "Přihlášení"
+    logout: "Odhlášení"
+    register: "Registrace"
+    forgot_password: "Zapomenuté heslo"
+    remember_me: "Zapamatovat si mě"
+    login_success: "Úspěšně přihlášen."
+    logout_success: "Úspěšně odhlášen."
+    access_denied: "Přístup zamítnut."
+    
+  # Time and dates
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M"
+      short: "%d.%m.%Y"
+      long: "%A, %d. %B %Y v %H:%M"
+      
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      short: "%d.%m."
+      long: "%A, %d. %B %Y"
+      
+    day_names:
+      - neděle
+      - pondělí
+      - úterý
+      - středa
+      - čtvrtek
+      - pátek
+      - sobota
+    abbr_day_names:
+      - ne
+      - po
+      - út
+      - st
+      - čt
+      - pá
+      - so
+    month_names:
+      - ~
+      - leden
+      - únor
+      - březen
+      - duben
+      - květen
+      - červen
+      - červenec
+      - srpen
+      - září
+      - říjen
+      - listopad
+      - prosinec
+    abbr_month_names:
+      - ~
+      - led
+      - úno
+      - bře
+      - dub
+      - kvě
+      - čer
+      - črc
+      - srp
+      - zář
+      - říj
+      - lis
+      - pro

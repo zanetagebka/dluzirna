@@ -1,0 +1,132 @@
+<div class="row">
+  <div class="col-lg-10 mx-auto">
+    <div class="hero-section text-white rounded-4 p-5 text-center position-relative overflow-hidden">
+      <div class="hero-background"></div>
+      <div class="hero-content position-relative">
+        <h1 class="display-3 mb-3 hero-title">
+          <i class="bi bi-building-check me-3"></i>
+          Dlužírna
+        </h1>
+        <p class="lead fs-4 mb-4">Efektivní nástroj pro intenzivnější upozorňování zákazníků na neuhrazené pohledávky</p>
+        <div class="hero-divider my-5"></div>
+        
+        <div class="row text-start">
+          <div class="col-md-6">
+            <div class="info-section mb-4">
+              <h5 class="mb-3">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                O projektu:
+              </h5>
+              <p class="mb-0 fs-6 lh-lg">
+                Prodáváme stavební materiál, který si zákazníci kupují oproti faktuře. I přes všechna 
+                opatření se stává, že faktura zůstává delší dobu neuhrazená, a proto jsme vytvořili 
+                nástroj, který bude zákazníky více a intenzivněji upozorňovat na jejich pohledávky.
+              </p>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="info-section">
+              <h5 class="mb-3">
+                <i class="bi bi-gear-fill me-2"></i>
+                Jak to funguje:
+              </h5>
+              <ol class="mb-0 fs-6 lh-lg process-list">
+                <li class="mb-2">Administrativní pracovník se přihlásí do aplikace a vyplní informace o pohledávce</li>
+                <li class="mb-2">Aplikace dlužníkovi zašle e-mail s upozorněním o registraci dluhu</li>
+                <li class="mb-2">E-mail obsahuje bezpečný odkaz na anonymizované informace</li>
+                <li class="mb-2">Dlužník má možnost se zaregistrovat a vidět detaily o svém dluhu</li>
+                <li class="mb-0">Registrace vyžaduje ověření e-mailové adresy pro bezpečnost</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-4 mb-4">
+    <div class="feature-card h-100 text-center">
+      <div class="card-body p-4">
+        <div class="feature-icon mb-3">
+          <i class="bi bi-file-earmark-text display-4 text-primary"></i>
+        </div>
+        <h5 class="card-title fw-bold mb-3">Evidence pohledávek</h5>
+        <p class="card-text text-muted">
+          Systematická evidence všech neuhrazených faktur s možností přidání popisu a termínu splatnosti.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4 mb-4">
+    <div class="feature-card h-100 text-center">
+      <div class="card-body p-4">
+        <div class="feature-icon mb-3">
+          <i class="bi bi-envelope display-4 text-success"></i>
+        </div>
+        <h5 class="card-title fw-bold mb-3">Automatické notifikace</h5>
+        <p class="card-text text-muted">
+          Automatické odesílání e-mailových upomínek zákazníkům s bezpečnými odkazy na detail dluhu.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4 mb-4">
+    <div class="feature-card h-100 text-center">
+      <div class="card-body p-4">
+        <div class="feature-icon mb-3">
+          <i class="bi bi-shield-check display-4 text-warning"></i>
+        </div>
+        <h5 class="card-title fw-bold mb-3">Bezpečný přístup</h5>
+        <p class="card-text text-muted">
+          Zabezpečený přístup k informacím o dluzích pomocí jedinečných tokenů bez nutnosti registrace.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% unless user_signed_in? %>
+<div class="row mt-5">
+  <div class="col-lg-8 mx-auto">
+    <div class="access-section text-center p-5 rounded-4">
+      <div class="mb-4">
+        <i class="bi bi-key-fill display-4 text-primary mb-3"></i>
+        <h3 class="fw-bold mb-3">Přístup k systému</h3>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="access-info p-4 rounded-3 h-100">
+            <i class="bi bi-envelope-open display-6 text-info mb-3"></i>
+            <h5 class="fw-bold mb-2">Máte e-mail s upomínkou?</h5>
+            <p class="text-muted mb-0">Použijte bezpečný odkaz z e-mailu pro zobrazení informací o vaší pohledávce.</p>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+          <div class="access-info p-4 rounded-3 h-100">
+            <i class="bi bi-person-circle display-6 text-success mb-3"></i>
+            <h5 class="fw-bold mb-2">Přihlášení do systému</h5>
+            <p class="text-muted mb-3">Administrátoři a registrovaní zákazníci:</p>
+            <div class="d-grid gap-2">
+              <%= link_to new_user_session_path, class: "btn btn-primary btn-lg rounded-pill" do %>
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                Přihlásit se
+              <% end %>
+              <%= link_to new_user_registration_path, class: "btn btn-outline-primary btn-lg rounded-pill" do %>
+                <i class="bi bi-person-plus me-2"></i>
+                Zaregistrovat se
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

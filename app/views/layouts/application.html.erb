@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <title><%= content_for(:title) || "Dlužírna - Správa pohledávek" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <%= link_to "Dlužírna", root_path, class: "navbar-brand" %>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <% if user_signed_in? %>
+              <% if current_user.admin? %>
+                <li class="nav-item">
+                  <%= link_to "Dashboard", admin_root_path, class: "nav-link" %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to "Pohledávky", admin_debts_path, class: "nav-link" %>
+                </li>
+              <% elsif current_user.customer? %>
+                <li class="nav-item">
+                  <%= link_to "Moje pohledávky", customer_debts_path, class: "nav-link" %>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+          
+          <ul class="navbar-nav">
+            <% if user_signed_in? %>
+              <li class="nav-item dropdown" data-controller="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                   data-bs-toggle="dropdown" 
+                   data-action="click->dropdown#toggle">
+                  <%= current_user.email %>
+                </a>
+                <ul class="dropdown-menu" data-dropdown-target="menu">
+                  <li><%= link_to "Profil", edit_user_registration_path, class: "dropdown-item" %></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><%= link_to "Odhlásit", destroy_user_session_path, data: { "turbo-method": :delete }, class: "dropdown-item" %></li>
+                </ul>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "Přihlášení", new_user_session_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Registrace", new_user_registration_path, class: "nav-link" %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container my-4">
+      <% if notice %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+
+      <% if alert %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= alert %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+
+    <footer class="footer-gradient text-white py-5 mt-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <h5 class="fw-bold mb-2">
+              <i class="bi bi-building-check me-2"></i>
+              Dlužírna
+            </h5>
+            <p class="mb-0 opacity-75">Správa pohledávek pro stavební materiály</p>
+          </div>
+          <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <p class="mb-1 opacity-75">
+              <i class="bi bi-calendar me-1"></i>
+              &copy; <%= Date.current.year %> Dlužírna
+            </p>
+            <p class="mb-0 opacity-75 small">
+              <i class="bi bi-shield-check me-1"></i>
+              Profesionální řešení pro správu pohledávek
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<% content_for :title, "Přihlášení" %>
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white text-center">
+        <h3 class="card-title mb-0">
+          <i class="fas fa-sign-in-alt me-2"></i>
+          Přihlášení
+        </h3>
+      </div>
+      
+      <div class="card-body p-4">
+        <%= form_with model: resource, as: resource_name, url: session_path(resource_name), 
+                      local: true, class: "row g-3" do |f| %>
+          
+          <div class="col-12">
+            <%= f.label :email, "E-mailová adresa", class: "form-label fw-semibold" %>
+            <%= f.email_field :email, 
+                              autofocus: true, 
+                              autocomplete: "email", 
+                              class: "form-control form-control-lg",
+                              placeholder: "váš@email.cz",
+                              required: true %>
+          </div>
+
+          <div class="col-12">
+            <%= f.label :password, "Heslo", class: "form-label fw-semibold" %>
+            <%= f.password_field :password, 
+                                autocomplete: "current-password", 
+                                class: "form-control form-control-lg",
+                                placeholder: "Zadejte heslo",
+                                required: true %>
+          </div>
+
+          <% if devise_mapping.rememberable? %>
+            <div class="col-12">
+              <div class="form-check">
+                <%= f.check_box :remember_me, class: "form-check-input" %>
+                <%= f.label :remember_me, "Zapamatovat si mě", class: "form-check-label" %>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="col-12 pt-2">
+            <%= f.submit "Přihlásit se", class: "btn btn-primary btn-lg w-100" %>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="card-footer text-center bg-light">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<% content_for :title, "Upravit pohledávku - Dlužírna" %>
+
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Upravit pohledávku</h1>
+      <div>
+        <%= link_to "Detail", admin_debt_path(@debt), class: "btn btn-outline-info me-2" %>
+        <%= link_to "← Zpět na seznam", admin_debts_path, class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', debt: @debt %>
+      </div>
+    </div>
+  </div>
+</div>

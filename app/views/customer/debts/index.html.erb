@@ -1,0 +1,117 @@
+<% content_for :title, "Moje pohledávky" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">
+    <i class="fas fa-file-invoice-dollar me-2 text-primary"></i>
+    Moje pohledávky
+  </h2>
+  <span class="badge bg-secondary fs-6"><%= @debts.count %> celkem</span>
+</div>
+
+<% if @debts.any? %>
+  <div class="row">
+    <% @debts.each do |debt| %>
+      <div class="col-12 mb-3">
+        <div class="card <%= 'debt-overdue' if debt.overdue? %> h-100">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-3">
+                <h5 class="card-title text-primary mb-1">
+                  <%= number_to_currency(debt.amount, unit: "Kč", separator: ",", delimiter: " ", format: "%n %u") %>
+                </h5>
+                <small class="text-muted">
+                  <i class="fas fa-calendar-alt me-1"></i>
+                  Splatnost: <%= l(debt.due_date, format: :short) %>
+                </small>
+              </div>
+              
+              <div class="col-md-4">
+                <% if debt.description.present? %>
+                  <p class="card-text mb-2">
+                    <%= truncate(strip_tags(debt.description), length: 100) %>
+                  </p>
+                <% end %>
+                <small class="text-muted">
+                  <i class="fas fa-clock me-1"></i>
+                  Vytvořeno: <%= l(debt.created_at, format: :short) %>
+                </small>
+              </div>
+              
+              <div class="col-md-3">
+                <span class="badge bg-<%= debt.status == 'pending' ? 'secondary' : 
+                                      debt.status == 'notified' ? 'warning' :
+                                      debt.status == 'viewed' ? 'info' :
+                                      debt.status == 'registered' ? 'success' : 'dark' %> fs-6">
+                  <%= case debt.status
+                      when 'pending' then 'Čekající'
+                      when 'notified' then 'Odesláno'
+                      when 'viewed' then 'Zobrazeno'
+                      when 'registered' then 'Registrováno'
+                      when 'resolved' then 'Vyřešeno'
+                      else debt.status.humanize
+                      end %>
+                </span>
+                
+                <% if debt.overdue? %>
+                  <br><small class="text-danger fw-bold">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Po splatnosti
+                  </small>
+                <% end %>
+              </div>
+              
+              <div class="col-md-2 text-end">
+                <%= link_to customer_debt_path(debt), class: "btn btn-outline-primary btn-sm" do %>
+                  <i class="fas fa-eye me-1"></i>
+                  Detail
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Summary Statistics -->
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <div class="card bg-light">
+        <div class="card-body text-center">
+          <h5 class="card-title text-primary">Celková výše</h5>
+          <h3 class="text-dark">
+            <%= number_to_currency(@debts.sum(&:amount), unit: "Kč", separator: ",", delimiter: " ", format: "%n %u") %>
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-light">
+        <div class="card-body text-center">
+          <h5 class="card-title text-warning">Po splatnosti</h5>
+          <h3 class="text-dark">
+            <%= @debts.select(&:overdue?).count %>
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-light">
+        <div class="card-body text-center">
+          <h5 class="card-title text-success">Vyřešeno</h5>
+          <h3 class="text-dark">
+            <%= @debts.where(status: 'resolved').count %>
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="text-center py-5">
+    <div class="mb-4">
+      <i class="fas fa-inbox fa-3x text-muted"></i>
+    </div>
+    <h4 class="text-muted">Žádné pohledávky</h4>
+    <p class="text-muted">V současné době nemáte žádné evidované pohledávky.</p>
+  </div>
+<% end %>

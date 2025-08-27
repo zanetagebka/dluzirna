@@ -1,0 +1,239 @@
+<% content_for :title, "Detail pohledávky - Dlužírna" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">
+    <i class="bi bi-file-earmark-text me-2 text-primary"></i>
+    Detail pohledávky
+  </h2>
+  <%= link_to root_path, class: "btn btn-outline-secondary" do %>
+    <i class="bi bi-arrow-left me-2"></i>
+    Zpět na hlavní stránku
+  <% end %>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card <% if @show_full_details && @debt_data&.overdue? %>debt-overdue<% end %>">
+      <div class="card-header">
+        <h4 class="card-title mb-0">
+          <i class="bi bi-exclamation-triangle me-2 text-warning"></i>
+          Informace o pohledávce
+        </h4>
+      </div>
+      <div class="card-body">
+        <% if @show_full_details %>
+          <div class="row mb-4">
+            <div class="col-sm-6">
+              <h5 class="text-primary">Výše pohledávky</h5>
+              <h2 class="text-danger">
+                <%= number_to_currency(@debt_data.amount, unit: "Kč", separator: ",", delimiter: " ", format: "%n %u") %>
+              </h2>
+            </div>
+            <div class="col-sm-6">
+              <h5>Datum splatnosti</h5>
+              <p class="fs-5 <%= 'text-danger fw-bold' if @debt_data.overdue? %>">
+                <%= l(@debt_data.due_date, format: :long) %>
+                <% if @debt_data.overdue? %>
+                  <br><small><i class="bi bi-exclamation-triangle me-1"></i>Po splatnosti</small>
+                <% end %>
+              </p>
+            </div>
+          </div>
+          
+          <% if @debt_data.description.present? %>
+            <div class="mb-4">
+              <h5>Popis pohledávky</h5>
+              <div class="border rounded p-3 bg-light">
+                <%= @debt_data.description %>
+              </div>
+            </div>
+          <% end %>
+          
+          <div class="row">
+            <div class="col-sm-6">
+              <h6 class="text-muted">E-mail zákazníka</h6>
+              <p><%= @debt_data.customer_email %></p>
+            </div>
+            <div class="col-sm-6">
+              <h6 class="text-muted">Datum vytvoření</h6>
+              <p><%= l(@debt_data.created_at, format: :long) %></p>
+            </div>
+          </div>
+          
+          <% if @debt_data.notified_at %>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="text-muted">Datum notifikace</h6>
+                <p><%= l(@debt_data.notified_at, format: :long) %></p>
+              </div>
+              <% if @debt_data.viewed_at %>
+                <div class="col-sm-6">
+                  <h6 class="text-muted">Datum zobrazení</h6>
+                  <p><%= l(@debt_data.viewed_at, format: :long) %></p>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="row mb-4">
+            <div class="col-sm-6">
+              <h5 class="text-primary">Výše pohledávky</h5>
+              <h2 class="text-muted" style="filter: blur(5px); user-select: none;">
+                ████ ███ Kč
+              </h2>
+            </div>
+            <div class="col-sm-6">
+              <h5>Datum splatnosti</h5>
+              <p class="fs-5 text-muted" style="filter: blur(5px); user-select: none;">
+                ██ ████████ ████
+              </p>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <h5>Popis pohledávky</h5>
+            <div class="border rounded p-3 bg-light">
+              <div class="text-muted" style="filter: blur(3px); user-select: none;">
+                ████████ ████████ ██████ ████ ████████<br>
+                ████ ████████ ██ ██████ ████████████<br>
+                ████████ ████ ████ ████████ ██████
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-sm-6">
+              <h6 class="text-muted">E-mail zákazníka</h6>
+              <p class="text-muted" style="filter: blur(3px); user-select: none;">████████@████.██</p>
+            </div>
+            <div class="col-sm-6">
+              <h6 class="text-muted">Datum vytvoření</h6>
+              <p class="text-muted" style="filter: blur(3px); user-select: none;">██ ████████ ████</p>
+            </div>
+          </div>
+
+          <div class="alert alert-warning mt-4">
+            <h5><i class="bi bi-lock"></i> Obsah je skrytý</h5>
+            <p>
+              Pro zobrazení detailních informací o této pohledávce se musíte přihlásit 
+              se svým účtem nebo se zaregistrovat.
+            </p>
+            <div class="d-grid gap-2">
+              <%= link_to new_user_session_path, class: "btn btn-primary btn-lg rounded-pill" do %>
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                Přihlásit se
+              <% end %>
+              <%= link_to new_user_registration_path, class: "btn btn-outline-primary btn-lg rounded-pill" do %>
+                <i class="bi bi-person-plus me-2"></i>
+                Registrovat se
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="alert alert-warning mt-4">
+          <h6><i class="bi bi-telephone"></i> Potřebujete pomoc?</h6>
+          <p class="mb-0">
+            V případě dotazů nebo potřeby domluvit splátkový kalendář nás neváhejte kontaktovat.
+            <br>
+            <strong>E-mail:</strong> info@dluzirna.cz | <strong>Telefon:</strong> +420 123 456 789
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">
+          <i class="bi bi-info-circle me-2"></i>
+          Informace
+        </h5>
+      </div>
+      <div class="card-body">
+        <% if @show_full_details %>
+          <div class="mb-3">
+            <small class="text-muted d-block">Stav pohledávky</small>
+            <span class="badge bg-<%= 
+              case @debt_data.status
+              when 'pending' then 'secondary'
+              when 'notified' then 'warning'
+              when 'viewed' then 'info'
+              when 'registered' then 'success'
+              when 'resolved' then 'success'
+              else 'secondary'
+              end
+            %> fs-6">
+              <%= case @debt_data.status
+                  when 'pending' then 'Čekající'
+                  when 'notified' then 'Odesláno'
+                  when 'viewed' then 'Zobrazeno'
+                  when 'registered' then 'Registrováno'
+                  when 'resolved' then 'Vyřešeno'
+                  else @debt_data.status.humanize
+                  end %>
+            </span>
+          </div>
+          
+          <% if @debt_data.overdue? %>
+            <div class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              <strong>Pozor!</strong><br>
+              Tato pohledávka je po splatnosti.
+            </div>
+          <% end %>
+          
+          <div class="mb-3">
+            <small class="text-muted d-block">Identifikátor</small>
+            <code class="small"><%= @debt_data.token %></code>
+          </div>
+          
+          <% if @debt_data.status == 'resolved' %>
+            <div class="alert alert-success">
+              <i class="bi bi-check-circle me-2"></i>
+              <strong>Vyřešeno</strong><br>
+              Tato pohledávka byla označena jako vyřešená.
+            </div>
+          <% end %>
+        <% else %>
+          <div class="mb-3">
+            <small class="text-muted d-block">Stav pohledávky</small>
+            <span class="badge bg-secondary fs-6" style="filter: blur(2px); user-select: none;">
+              ████████
+            </span>
+          </div>
+          
+          <div class="alert alert-info">
+            <i class="bi bi-lock me-2"></i>
+            <strong>Přihlaste se</strong><br>
+            Pro zobrazení detailních informací se musíte přihlásit.
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="card mt-3">
+      <div class="card-header">
+        <h5 class="card-title mb-0">
+          <i class="bi bi-shield-check me-2"></i>
+          Bezpečnost a soukromí
+        </h5>
+      </div>
+      <div class="card-body">
+        <p class="small text-muted">
+          <i class="bi bi-shield-lock me-1"></i>
+          Vaše data jsou chráněna pomocí zabezpečených tokenů. 
+          Odkazy na pohledávky jsou jedinečné a nesdílejte je s nikým.
+        </p>
+        
+        <% unless @show_full_details %>
+          <p class="small text-muted mb-0">
+            <i class="bi bi-eye-slash me-1"></i>
+            Citlivé informace jsou skryty pro neautorizované uživatele.
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

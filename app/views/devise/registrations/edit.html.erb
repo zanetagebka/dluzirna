@@ -1,0 +1,134 @@
+<% content_for :title, "Editace profilu" %>
+
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h3 class="card-title mb-0">
+          <i class="fas fa-user-edit me-2"></i>
+          Editace profilu
+        </h3>
+      </div>
+      
+      <div class="card-body p-4">
+        <%= form_with model: resource, as: resource_name, url: registration_path(resource_name), 
+                      method: :put, local: true, class: "row g-3" do |f| %>
+          
+          <% if resource.errors.any? %>
+            <div class="col-12">
+              <div class="alert alert-danger">
+                <h6 class="alert-heading">
+                  <i class="fas fa-exclamation-triangle me-2"></i>
+                  Opravte následující chyby:
+                </h6>
+                <ul class="mb-0">
+                  <% resource.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="col-12">
+            <%= f.label :email, "E-mailová adresa", class: "form-label fw-semibold" %>
+            <%= f.email_field :email, 
+                              autofocus: true, 
+                              autocomplete: "email", 
+                              class: "form-control form-control-lg",
+                              placeholder: "váš@email.cz" %>
+            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+              <div class="form-text text-warning">
+                <i class="fas fa-clock me-1"></i>
+                Čeká na potvrzení: <strong><%= resource.unconfirmed_email %></strong>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="col-md-6">
+            <%= f.label :password, "Nové heslo", class: "form-label fw-semibold" %>
+            <%= f.password_field :password, 
+                                autocomplete: "new-password", 
+                                class: "form-control form-control-lg",
+                                placeholder: "Ponechte prázdné, pokud nechcete měnit" %>
+            <% if @minimum_password_length %>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Minimálně <%= @minimum_password_length %> znaků
+              </div>
+            <% end %>
+          </div>
+
+          <div class="col-md-6">
+            <%= f.label :password_confirmation, "Potvrzení hesla", class: "form-label fw-semibold" %>
+            <%= f.password_field :password_confirmation, 
+                                autocomplete: "new-password", 
+                                class: "form-control form-control-lg",
+                                placeholder: "Zopakujte nové heslo" %>
+          </div>
+
+          <div class="col-12">
+            <%= f.label :current_password, "Současné heslo", class: "form-label fw-semibold text-danger" %>
+            <%= f.password_field :current_password, 
+                                autocomplete: "current-password", 
+                                class: "form-control form-control-lg",
+                                placeholder: "Zadejte současné heslo pro potvrzení změn",
+                                required: true %>
+            <div class="form-text text-muted">
+              <i class="fas fa-shield-alt me-1"></i>
+              Pro bezpečnost potřebujeme vaše současné heslo k potvrzení změn
+            </div>
+          </div>
+
+          <div class="col-12 pt-3">
+            <div class="d-grid gap-2 d-md-flex">
+              <%= f.submit "Aktualizovat profil", 
+                          class: "btn btn-primary btn-lg px-5 me-md-2" %>
+              <%= link_to "Zrušit", :back, 
+                          class: "btn btn-outline-secondary btn-lg px-4" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Account deletion section - Only for admin users -->
+    <% if current_user&.admin? %>
+      <div class="card mt-4 border-danger">
+        <div class="card-header bg-danger text-white">
+          <h5 class="card-title mb-0">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Nebezpečná zóna
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text text-muted mb-3">
+            Zrušení účtu je <strong>nevratná akce</strong>. Všechna vaše data budou trvale smazána.
+          </p>
+          <%= button_to "Zrušit můj účet", 
+                        registration_path(resource_name), 
+                        method: :delete,
+                        data: { 
+                          confirm: "Opravdu chcete zrušit svůj účet? Tato akce je nevratná!", 
+                          turbo_confirm: "Opravdu chcete zrušit svůj účet? Tato akce je nevratná!" 
+                        },
+                        class: "btn btn-outline-danger" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="card mt-4 border-info">
+        <div class="card-header bg-info text-white">
+          <h5 class="card-title mb-0">
+            <i class="fas fa-info-circle me-2"></i>
+            Správa účtu
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text text-muted mb-0">
+            Pro zrušení účtu nebo další změny kontaktujte prosím administrátora systému.
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

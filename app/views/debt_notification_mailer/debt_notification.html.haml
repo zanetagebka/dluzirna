@@ -1,0 +1,59 @@
+%h2 Oznámení o neuhrazené pohledávce
+
+%p Vážený zákazníku,
+
+%p 
+  rádi bychom Vás informovali o neuhrazené pohledávce ve výši 
+  %strong= number_to_currency(@debt.amount, unit: "Kč", separator: ",", delimiter: " ")
+  s datem splatnosti 
+  %strong= l(@debt.due_date, format: :long)
+
+%p Popis pohledávky:
+%blockquote
+  = simple_format(@debt.description.to_s)
+
+%p 
+  Pro zobrazení detailů této pohledávky klikněte na následující odkaz:
+  = link_to @debt_url, @debt_url
+
+%p 
+  V případě dotazů nebo potřeby domluvit splátkový kalendář nás neváhejte kontaktovat.
+
+%p 
+  Informace o ochraně soukromých údajů najdete na našich stránkách.
+
+%p 
+  S pozdravem,
+  %br
+  Váš tým
+
+%hr
+
+%h3 Debt Notification
+
+%p Dear customer,
+
+%p 
+  We would like to inform you about an outstanding debt of 
+  %strong= number_to_currency(@debt.amount, unit: "CZK ", format: "%u%n")
+  with due date 
+  %strong= l(@debt.due_date, format: :long)
+
+%p Debt description:
+%blockquote
+  = simple_format(@debt.description.to_s)
+
+%p 
+  To view details of this debt, please click the following link:
+  = link_to @debt_url, @debt_url
+
+%p 
+  If you have any questions or need to arrange a payment plan, please don't hesitate to contact us.
+
+%p 
+  Privacy information can be found on our website.
+
+%p 
+  Best regards,
+  %br
+  Your team

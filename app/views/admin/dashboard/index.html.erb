@@ -1,0 +1,130 @@
+<% content_for :title, "Admin Dashboard - Dlužírna" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="fw-bold text-dark">
+    <i class="bi bi-speedometer2 me-2 text-primary"></i>
+    Dashboard
+  </h1>
+  <%= link_to new_admin_debt_path, class: "btn btn-primary btn-lg" do %>
+    <i class="bi bi-plus-circle me-2"></i>
+    Nová pohledávka
+  <% end %>
+</div>
+
+<div class="row mb-4">
+  <div class="col-lg-3 col-sm-6 mb-4">
+    <div class="card bg-primary text-white stats-card">
+      <div class="card-body text-center">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title mb-1">Celkem pohledávek</h5>
+            <h2 class="card-text mb-0"><%= @total_debts %></h2>
+          </div>
+          <i class="bi bi-file-earmark-text display-4 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-3 col-sm-6 mb-4">
+    <div class="card bg-warning text-white stats-card">
+      <div class="card-body text-center">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title mb-1">Čekající</h5>
+            <h2 class="card-text mb-0"><%= @pending_debts %></h2>
+          </div>
+          <i class="bi bi-hourglass-split display-4 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-3 col-sm-6 mb-4">
+    <div class="card bg-danger text-white stats-card">
+      <div class="card-body text-center">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title mb-1">Po splatnosti</h5>
+            <h2 class="card-text mb-0"><%= @overdue_debts %></h2>
+          </div>
+          <i class="bi bi-exclamation-triangle display-4 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-3 col-sm-6 mb-4">
+    <div class="card bg-success text-white stats-card">
+      <div class="card-body text-center">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title mb-1">Celková částka</h5>
+            <h2 class="card-text mb-0 fs-5"><%= number_to_currency(Debt.sum(:amount), unit: "Kč") %></h2>
+          </div>
+          <i class="bi bi-currency-dollar display-4 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center bg-light">
+    <h5 class="card-title mb-0 fw-bold">
+      <i class="bi bi-clock-history me-2 text-primary"></i>
+      Nedávné pohledávky
+    </h5>
+    <%= link_to admin_debts_path, class: "btn btn-sm btn-outline-primary rounded-pill" do %>
+      <i class="bi bi-arrow-right me-1"></i>
+      Zobrazit všechny
+    <% end %>
+  </div>
+  <div class="card-body">
+    <% if @recent_debts.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Zákazník</th>
+              <th>Částka</th>
+              <th>Splatnost</th>
+              <th>Stav</th>
+              <th>Vytvořeno</th>
+              <th>Akce</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @recent_debts.each do |debt| %>
+              <tr>
+                <td><%= debt.customer_email %></td>
+                <td>
+                  <strong><%= number_to_currency(debt.amount, unit: "Kč") %></strong>
+                </td>
+                <td>
+                  <span class="<%= 'text-danger' if debt.due_date < Date.current %>">
+                    <%= l(debt.due_date, format: :short) %>
+                  </span>
+                </td>
+                <td>
+                  <span class="badge bg-<%= debt.status == 'pending' ? 'warning' : debt.status == 'resolved' ? 'success' : 'info' %>">
+                    <%= debt.status.humanize %>
+                  </span>
+                </td>
+                <td><%= l(debt.created_at, format: :short) %></td>
+                <td>
+                  <%= link_to admin_debt_path(debt), class: "btn btn-sm btn-outline-primary rounded-pill" do %>
+                    <i class="bi bi-eye me-1"></i>
+                    Detail
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="text-muted text-center py-4">Zatím nejsou žádné pohledávky.</p>
+    <% end %>
+  </div>
+</div>

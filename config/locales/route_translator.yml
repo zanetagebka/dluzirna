@@ -1,0 +1,47 @@
+cs:
+  routes:
+    # Admin routes
+    admin: "admin"
+    dashboard: "dashboard"
+    debts: "pohledavky"
+    new: "nova"
+    edit: "upravit"
+    
+    # Customer routes  
+    customer: "zakaznik"
+    
+    # Public routes
+    pohledavky: "pohledavky"
+    
+    # Authentication routes (Devise)
+    users: "uzivatele"
+    sign_in: "prihlaseni"
+    sign_up: "registrace"
+    sign_out: "odhlaseni"
+    password: "heslo"
+    confirmation: "potvrzeni"
+    unlock: "odemceni"
+
+en:
+  routes:
+    # Admin routes
+    admin: "admin"
+    dashboard: "dashboard" 
+    debts: "debts"
+    new: "new"
+    edit: "edit"
+    
+    # Customer routes
+    customer: "customer"
+    
+    # Public routes
+    pohledavky: "debts"
+    
+    # Authentication routes (Devise)
+    users: "users"
+    sign_in: "sign_in"
+    sign_up: "sign_up"
+    sign_out: "sign_out"
+    password: "password"
+    confirmation: "confirmation"
+    unlock: "unlock"

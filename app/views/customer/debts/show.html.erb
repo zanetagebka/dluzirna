@@ -1,0 +1,142 @@
+<% content_for :title, "Detail pohledávky" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">
+    <i class="fas fa-file-invoice me-2 text-primary"></i>
+    Detail pohledávky
+  </h2>
+  <%= link_to customer_debts_path, class: "btn btn-outline-secondary" do %>
+    <i class="fas fa-arrow-left me-2"></i>
+    Zpět na přehled
+  <% end %>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card <%= 'debt-overdue' if @debt.overdue? %>">
+      <div class="card-header">
+        <h4 class="card-title mb-0">
+          Pohledávka č. <%= @debt.id %>
+          <span class="badge bg-<%= @debt.status == 'pending' ? 'secondary' : 
+                                  @debt.status == 'notified' ? 'warning' :
+                                  @debt.status == 'viewed' ? 'info' :
+                                  @debt.status == 'registered' ? 'success' : 'dark' %> ms-2">
+            <%= case @debt.status
+                when 'pending' then 'Čekající'
+                when 'notified' then 'Odesláno'
+                when 'viewed' then 'Zobrazeno'
+                when 'registered' then 'Registrováno'
+                when 'resolved' then 'Vyřešeno'
+                else @debt.status.humanize
+                end %>
+          </span>
+        </h4>
+      </div>
+      
+      <div class="card-body">
+        <div class="row mb-4">
+          <div class="col-sm-6">
+            <h5 class="text-primary">Výše pohledávky</h5>
+            <h2 class="text-dark">
+              <%= number_to_currency(@debt.amount, unit: "Kč", separator: ",", delimiter: " ", format: "%n %u") %>
+            </h2>
+          </div>
+          <div class="col-sm-6">
+            <h5>Datum splatnosti</h5>
+            <p class="fs-5 <%= 'text-danger fw-bold' if @debt.overdue? %>">
+              <%= l(@debt.due_date, format: :long) %>
+              <% if @debt.overdue? %>
+                <br><small><i class="fas fa-exclamation-triangle me-1"></i>Po splatnosti</small>
+              <% end %>
+            </p>
+          </div>
+        </div>
+        
+        <% unless @debt.description.blank? %>
+          <div class="mb-4">
+            <h5>Popis pohledávky</h5>
+            <div class="border rounded p-3 bg-light">
+              <%= @debt.description %>
+            </div>
+          </div>
+        <% end %>
+        
+        <div class="row">
+          <div class="col-sm-6">
+            <h6 class="text-muted">E-mail zákazníka</h6>
+            <p><%= @debt.customer_email %></p>
+          </div>
+          <div class="col-sm-6">
+            <h6 class="text-muted">Datum vytvoření</h6>
+            <p><%= l(@debt.created_at, format: :long) %></p>
+          </div>
+        </div>
+        
+        <% if @debt.notified_at %>
+          <div class="row">
+            <div class="col-sm-6">
+              <h6 class="text-muted">Datum notifikace</h6>
+              <p><%= l(@debt.notified_at, format: :long) %></p>
+            </div>
+            <% if @debt.viewed_at %>
+              <div class="col-sm-6">
+                <h6 class="text-muted">Datum zobrazení</h6>
+                <p><%= l(@debt.viewed_at, format: :long) %></p>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">
+          <i class="fas fa-info-circle me-2"></i>
+          Informace
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <small class="text-muted d-block">Stav pohledávky</small>
+          <span class="badge bg-<%= @debt.status == 'pending' ? 'secondary' : 
+                                  @debt.status == 'notified' ? 'warning' :
+                                  @debt.status == 'viewed' ? 'info' :
+                                  @debt.status == 'registered' ? 'success' : 'dark' %> fs-6">
+            <%= case @debt.status
+                when 'pending' then 'Čekající'
+                when 'notified' then 'Odesláno'
+                when 'viewed' then 'Zobrazeno'
+                when 'registered' then 'Registrováno'
+                when 'resolved' then 'Vyřešeno'
+                else @debt.status.humanize
+                end %>
+          </span>
+        </div>
+        
+        <% if @debt.overdue? %>
+          <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Pozor!</strong><br>
+            Tato pohledávka je po splatnosti.
+          </div>
+        <% end %>
+        
+        <div class="mb-3">
+          <small class="text-muted d-block">Identifikátor</small>
+          <code><%= @debt.token %></code>
+        </div>
+        
+        <% if @debt.status == 'resolved' %>
+          <div class="alert alert-success">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>Vyřešeno</strong><br>
+            Tato pohledávka byla označena jako vyřešená.
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<% content_for :title, "Nová pohledávka - Dlužírna" %>
+
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Nová pohledávka</h1>
+      <%= link_to "← Zpět na seznam", admin_debts_path, class: "btn btn-outline-secondary" %>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', debt: @debt %>
+      </div>
+    </div>
+  </div>
+</div>
