@@ -68,7 +68,7 @@ RSpec.describe 'Customer::Debts', type: :request do
       it 'shows empty state when user has no debts' do
         user_without_debts = create(:user, role: :customer)
         sign_in user_without_debts, scope: :user
-        
+
         get customer_debts_path
         expect(response.body).to include('Žádné pohledávky')
         expect(response.body).to include('0 celkem')
@@ -151,7 +151,7 @@ RSpec.describe 'Customer::Debts', type: :request do
 
       it 'only shows debts associated with current user' do
         orphaned_debt = create(:debt, customer_user: nil, customer_email: customer_user.email)
-        
+
         get customer_debts_path
         expect(response.body).not_to include(orphaned_debt.token)
       end
@@ -159,7 +159,7 @@ RSpec.describe 'Customer::Debts', type: :request do
       it 'prevents enumeration of debt IDs' do
         # Try to access debt with sequential ID guessing
         non_existent_id = Debt.maximum(:id).to_i + 100
-        
+
         get customer_debt_path(id: non_existent_id)
         expect(response).to redirect_to(customer_debts_path)
         expect(flash[:alert]).to eq('Debt not found.')
@@ -168,7 +168,7 @@ RSpec.describe 'Customer::Debts', type: :request do
       it 'maintains session security across requests' do
         get customer_debts_path
         expect(response).to have_http_status(:success)
-        
+
         # Sign out and ensure access is denied
         sign_out :user
         get customer_debts_path
@@ -190,7 +190,7 @@ RSpec.describe 'Customer::Debts', type: :request do
       it 'includes status badges for debt states' do
         pending_debt = create(:debt, customer_user: customer_user, status: :pending)
         notified_debt = create(:debt, customer_user: customer_user, status: :notified)
-        
+
         get customer_debts_path
         expect(response.body).to include('badge')
         expect(response.body).to include('Čekající')
@@ -205,7 +205,7 @@ RSpec.describe 'Customer::Debts', type: :request do
     it 'handles database connection errors gracefully' do
       # Stub the association to raise database error
       allow_any_instance_of(User).to receive(:customer_debts).and_raise(ActiveRecord::ConnectionNotEstablished)
-      
+
       expect {
         get customer_debts_path
       }.to raise_error(ActiveRecord::ConnectionNotEstablished)

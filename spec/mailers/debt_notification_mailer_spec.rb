@@ -14,11 +14,11 @@ RSpec.describe DebtNotificationMailer, type: :mailer do
 
     describe "email headers" do
       it "sets correct recipient" do
-        expect(mail.to).to eq(["customer@example.com"])
+        expect(mail.to).to eq([ "customer@example.com" ])
       end
 
       it "sets correct sender" do
-        expect(mail.from).to eq(["noreply@dluzirna.cz"])
+        expect(mail.from).to eq([ "noreply@dluzirna.cz" ])
       end
 
       it "sets bilingual subject" do
@@ -90,7 +90,6 @@ RSpec.describe DebtNotificationMailer, type: :mailer do
         debt = build(:debt, customer_email: nil)
         expect { DebtNotificationMailer.debt_notification(debt) }.not_to raise_error
       end
-
     end
 
     context "with special characters in data" do
@@ -100,7 +99,7 @@ RSpec.describe DebtNotificationMailer, type: :mailer do
           description: "Description with <b>HTML</b> & special chars"
         )
         mail = DebtNotificationMailer.debt_notification(debt)
-        
+
         expect(mail.body.encoded).to include("&amp;")
         expect(mail.body.encoded).to include("special chars")
       end

@@ -77,7 +77,7 @@ RSpec.describe Debt, type: :model do
         new_debt = build(:debt, token: existing_debt.token)
         # Bypass the callback that would regenerate the token
         new_debt.define_singleton_method(:generate_secure_token) { }
-        
+
         expect(new_debt).not_to be_valid
         expect(new_debt.errors[:token]).to include('has already been taken')
       end
@@ -97,19 +97,19 @@ RSpec.describe Debt, type: :model do
 
     it 'allows setting each status' do
       debt = create(:debt)
-      
+
       debt.pending!
       expect(debt.pending?).to be true
-      
+
       debt.notified!
       expect(debt.notified?).to be true
-      
+
       debt.viewed!
       expect(debt.viewed?).to be true
-      
+
       debt.registered!
       expect(debt.registered?).to be true
-      
+
       debt.resolved!
       expect(debt.resolved?).to be true
     end
@@ -168,7 +168,7 @@ RSpec.describe Debt, type: :model do
         debt = build(:debt)
         # Remove token to test callback
         debt.token = nil
-        
+
         # The callback should set the token during creation, but validation prevents this
         # So let's test that the callback method works correctly
         expect(debt.token).to be_nil
@@ -181,14 +181,14 @@ RSpec.describe Debt, type: :model do
         custom_token = 'custom_token_123'
         debt = build(:debt, token: custom_token)
         debt.save!
-        
+
         expect(debt.token).to eq(custom_token)
       end
 
       it 'generates unique tokens for multiple debts' do
         debt1 = create(:debt)
         debt2 = create(:debt)
-        
+
         expect(debt1.token).not_to eq(debt2.token)
       end
     end
@@ -218,18 +218,18 @@ RSpec.describe Debt, type: :model do
       it 'generates URL-safe base64 token' do
         debt = build(:debt)
         debt.send(:generate_secure_token)
-        
+
         expect(debt.token).to match(/\A[A-Za-z0-9_-]+\z/)
       end
 
       it 'regenerates token if not unique' do
         existing_debt = create(:debt)
         new_debt = build(:debt)
-        
+
         # Set the new debt's token to match existing one temporarily
         new_debt.token = existing_debt.token
         expect(new_debt.send(:token_unique?)).to be false
-        
+
         # Generate secure token should create a unique one
         new_debt.send(:generate_secure_token)
         expect(new_debt.token).not_to eq(existing_debt.token)
@@ -246,7 +246,7 @@ RSpec.describe Debt, type: :model do
       it 'returns false when token already exists' do
         existing_debt = create(:debt)
         new_debt = build(:debt, token: existing_debt.token)
-        
+
         expect(new_debt.send(:token_unique?)).to be false
       end
 

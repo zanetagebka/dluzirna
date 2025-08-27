@@ -10,7 +10,7 @@ RSpec.describe "Debt Email Content Verification", type: :feature do
       description: rich_text_description
     )
   end
-  
+
   let(:rich_text_description) do
     "<p><strong>Faktura č. 2024-0156</strong></p><p>Stavební materiál:</p><ul><li>Cement 50kg - 20 kusů</li><li>Cihly 500ks</li></ul><p>Dodáno dne: 15.11.2024</p>"
   end
@@ -122,10 +122,10 @@ RSpec.describe "Debt Email Content Verification", type: :feature do
 
     it "uses proper Czech locale formatting" do
       html_body = mail.html_part.body.decoded
-      
+
       # Czech date format
       expect(html_body).to match(/\d{1,2}\.\s\w+\s\d{4}/)
-      
+
       # Czech number format with spaces
       expect(html_body).to include("45 000,75")
     end
@@ -135,10 +135,10 @@ RSpec.describe "Debt Email Content Verification", type: :feature do
         customer_email: "jiri.dvorak@example.com",
         description: "Účet za žádostí už je přítomný"
       )
-      
+
       czech_mail = DebtNotificationMailer.debt_notification(debt_with_czech)
       html_body = czech_mail.html_part.body.decoded
-      
+
       expect(html_body).to include("Vážený zákazníku")
       expect(html_body).to include("už je přítomný")
     end
@@ -146,7 +146,7 @@ RSpec.describe "Debt Email Content Verification", type: :feature do
     it "includes alt text for images" do
       html_body = mail.html_part.body.decoded
       images = html_body.scan(/<img[^>]*>/)
-      
+
       images.each do |img|
         expect(img).to match(/alt="[^"]+"/i)
       end
@@ -157,14 +157,14 @@ RSpec.describe "Debt Email Content Verification", type: :feature do
     let(:mail) { DebtNotificationMailer.debt_notification(debt) }
 
     it "includes proper sender reputation headers" do
-      expect(mail.from).to eq(["noreply@dluzirna.cz"])
+      expect(mail.from).to eq([ "noreply@dluzirna.cz" ])
       expect(mail.reply_to).to be_present
     end
 
     it "avoids spam trigger words in subject" do
       subject = mail.subject.downcase
-      spam_words = ["free", "urgent", "act now", "winner", "congratulations"]
-      
+      spam_words = [ "free", "urgent", "act now", "winner", "congratulations" ]
+
       spam_words.each do |word|
         expect(subject).not_to include(word)
       end
@@ -173,7 +173,7 @@ RSpec.describe "Debt Email Content Verification", type: :feature do
     it "maintains proper text-to-HTML ratio" do
       html_length = mail.html_part.body.decoded.length
       text_length = mail.text_part.body.decoded.length
-      
+
       ratio = text_length.to_f / html_length.to_f
       expect(ratio).to be > 0.1 # At least 10% text content
     end

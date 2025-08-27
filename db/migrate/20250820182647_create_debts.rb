@@ -13,12 +13,12 @@ class CreateDebts < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    
+
     # Performance indexes
     add_index :debts, :customer_email
     add_index :debts, :status
     add_index :debts, :due_date
     add_index :debts, :token, unique: true
-    add_index :debts, [:customer_email, :status]
+    add_index :debts, [ :customer_email, :status ]
   end
 end

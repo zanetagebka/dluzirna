@@ -9,35 +9,35 @@ Rails.application.routes.draw do
   end
 
   localized do
-    root 'homepage#index'
-    get 'test' => 'homepage#test'
-    
-    resources :pohledavky, controller: 'public_debts', only: [:show], param: :token
-    
-    devise_for :users, path: 'uzivatele', path_names: {
-      sign_in: 'prihlaseni',
-      sign_out: 'odhlaseni', 
-      sign_up: 'registrace',
-      password: 'heslo',
-      confirmation: 'potvrzeni',
-      unlock: 'odemceni'
+    root "homepage#index"
+    get "test" => "homepage#test"
+
+    resources :pohledavky, controller: "public_debts", only: [ :show ], param: :token
+
+    devise_for :users, path: "uzivatele", path_names: {
+      sign_in: "prihlaseni",
+      sign_out: "odhlaseni",
+      sign_up: "registrace",
+      password: "heslo",
+      confirmation: "potvrzeni",
+      unlock: "odemceni"
     }, controllers: {
-      registrations: 'users/registrations'
+      registrations: "users/registrations"
     }
-    
+
     namespace :admin do
-      root 'dashboard#index'
-      resources :debts, path: 'pohledavky' do
+      root "dashboard#index"
+      resources :debts, path: "pohledavky" do
         member do
           patch :send_notification
         end
       end
     end
-    
-    namespace :customer, path: 'zakaznik' do
-      resources :debts, only: [:index, :show], path: 'pohledavky'
+
+    namespace :customer, path: "zakaznik" do
+      resources :debts, only: [ :index, :show ], path: "pohledavky"
     end
   end
-  
-  get '/', to: redirect('/cs')
+
+  get "/", to: redirect("/cs")
 end

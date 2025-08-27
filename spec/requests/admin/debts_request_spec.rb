@@ -149,7 +149,7 @@ RSpec.describe 'Admin::Debts', type: :request do
           # First verify we can create a debt directly
           debt = Debt.new(valid_attributes)
           expect(debt.valid?).to be_truthy, debt.errors.full_messages.join(', ')
-          
+
           post admin_debts_path, params: { debt: valid_attributes }
           if response.status == 422
             puts "Response body: #{response.body}"
@@ -282,7 +282,7 @@ RSpec.describe 'Admin::Debts', type: :request do
         get admin_debts_path
         expect(response).to redirect_to(new_user_session_path)
 
-        get new_admin_debt_path  
+        get new_admin_debt_path
         expect(response).to redirect_to(new_user_session_path)
 
         post admin_debts_path, params: { debt: attributes_for(:debt) }
@@ -292,7 +292,7 @@ RSpec.describe 'Admin::Debts', type: :request do
       it 'prevents access to other users data' do
         other_admin = create(:user, role: :admin)
         debt = create(:debt)
-        
+
         # All admins can see all debts in this system design
         get admin_debt_path(debt)
         expect(response).to have_http_status(:success)

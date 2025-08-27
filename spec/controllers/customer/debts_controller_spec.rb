@@ -60,13 +60,13 @@ RSpec.describe Customer::DebtsController, type: :controller do
 
       it 'orders debts by most recent first' do
         get :index
-        expect(assigns(:debts)).to eq([customer_debt1, customer_debt2])
+        expect(assigns(:debts)).to eq([ customer_debt1, customer_debt2 ])
       end
 
       it 'shows empty collection when user has no debts' do
         user_without_debts = create(:user, role: :customer)
         sign_in user_without_debts, scope: :user
-        
+
         get :index
         expect(assigns(:debts)).to be_empty
       end
@@ -172,7 +172,7 @@ RSpec.describe Customer::DebtsController, type: :controller do
         # Verify that the controller uses current_user.customer_debts
         # rather than Debt.find directly
         get :index
-        
+
         # Check that only user's debts are loaded
         debts = assigns(:debts)
         expect(debts.all? { |debt| debt.customer_user == customer_user }).to be true
@@ -180,7 +180,7 @@ RSpec.describe Customer::DebtsController, type: :controller do
 
       it 'prevents access to debts without customer_user' do
         orphaned_debt = create(:debt, customer_user: nil, customer_email: customer_user.email)
-        
+
         get :show, params: { id: orphaned_debt.id }
         expect(response).to redirect_to(customer_debts_path)
         expect(flash[:alert]).to eq('Debt not found.')
@@ -191,7 +191,7 @@ RSpec.describe Customer::DebtsController, type: :controller do
   describe 'access control' do
     describe 'admin user access' do
       before { sign_in admin_user, scope: :user }
-      
+
       it 'redirects admin users from index' do
         get :index
         expect(response).to redirect_to(root_path)
@@ -208,7 +208,7 @@ RSpec.describe Customer::DebtsController, type: :controller do
 
     describe 'debt access control' do
       before { sign_in customer_user, scope: :user }
-      
+
       it 'handles missing debt gracefully' do
         get :show, params: { id: 99999 }
         expect(response).to redirect_to(customer_debts_path)

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Debt Email Integration", type: :request do
   let(:admin_user) { create(:user, :admin) }
-  
+
   before do
     sign_in admin_user, scope: :user
     ActionMailer::Base.deliveries.clear
@@ -29,17 +29,17 @@ RSpec.describe "Debt Email Integration", type: :request do
 
       it "sends email to correct recipient" do
         post admin_debts_path, params: debt_params
-        
+
         email = ActionMailer::Base.deliveries.last
         expect(email.to).to include("jan.novak@example.com")
       end
 
       it "includes debt information in email" do
         post admin_debts_path, params: debt_params
-        
+
         email = ActionMailer::Base.deliveries.last
         debt = Debt.last
-        
+
         expect(email.body.encoded).to include("Dear customer")
         expect(email.body.encoded).to include("25,000.00")
         expect(email.body.encoded).to include("Faktura za stavebn")
@@ -48,7 +48,7 @@ RSpec.describe "Debt Email Integration", type: :request do
 
       it "creates debt record with correct status" do
         post admin_debts_path, params: debt_params
-        
+
         debt = Debt.last
         expect(debt.status).to eq("notified")
       end
@@ -56,11 +56,11 @@ RSpec.describe "Debt Email Integration", type: :request do
       it "handles email delivery failures gracefully" do
         # Simulate email delivery failure
         allow(DebtNotificationMailer).to receive_message_chain(:delay, :debt_notification).and_raise(StandardError.new("SMTP Error"))
-        
+
         expect {
           post admin_debts_path, params: debt_params
         }.not_to raise_error
-        
+
         # Should still create debt even if email fails
         expect(Debt.count).to eq(1)
       end
@@ -93,7 +93,7 @@ RSpec.describe "Debt Email Integration", type: :request do
 
   describe "PATCH /admin/debts/:id" do
     let(:debt) { create(:debt) }
-    
+
     context "when updating debt amount" do
       let(:update_params) do
         {
@@ -112,7 +112,7 @@ RSpec.describe "Debt Email Integration", type: :request do
 
       it "includes updated amount in email" do
         patch admin_debt_path(debt), params: update_params
-        
+
         email = ActionMailer::Base.deliveries.last
         updated_amount = debt.amount + 5000
         # Check that the updated amount appears in the email (Czech format with space separator)

@@ -70,7 +70,7 @@ RSpec.describe Admin::DebtsController, type: :controller do
 
       it 'assigns debts in recent order' do
         get :index
-        expect(assigns(:debts)).to eq([debt1, debt2])
+        expect(assigns(:debts)).to eq([ debt1, debt2 ])
       end
 
       it 'uses pagination with 25 per page' do
@@ -151,14 +151,14 @@ RSpec.describe Admin::DebtsController, type: :controller do
       context 'with valid parameters' do
         it 'creates a new debt via service' do
           expect(DebtCreationService).to receive(:call).and_return(create(:debt))
-          
+
           post :create, params: { debt: valid_attributes }
         end
 
         it 'redirects to the debt show page' do
           debt = create(:debt)
           allow(DebtCreationService).to receive(:call).and_return(debt)
-          
+
           post :create, params: { debt: valid_attributes }
           expect(response).to redirect_to(admin_debt_path(debt))
         end
@@ -166,7 +166,7 @@ RSpec.describe Admin::DebtsController, type: :controller do
         it 'sets success notice' do
           debt = create(:debt)
           allow(DebtCreationService).to receive(:call).and_return(debt)
-          
+
           post :create, params: { debt: valid_attributes }
           expect(flash[:notice]).to eq('Debt was successfully created.')
         end
@@ -287,10 +287,10 @@ RSpec.describe Admin::DebtsController, type: :controller do
     describe 'before_action callbacks' do
       it 'sets debt for show, edit, update, destroy actions' do
         debt = create(:debt)
-        
+
         get :show, params: { id: debt.id }
         expect(assigns(:debt)).to eq(debt)
-        
+
         get :edit, params: { id: debt.id }
         expect(assigns(:debt)).to eq(debt)
       end

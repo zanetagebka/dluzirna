@@ -1,9 +1,9 @@
 namespace :admin do
   desc "Create a new admin user"
-  task :create => :environment do
-    email = ENV['email']
-    password = ENV['password']
-    
+  task create: :environment do
+    email = ENV["email"]
+    password = ENV["password"]
+
     if email.blank? || password.blank?
       puts "Usage: rake admin:create email=admin@firma.cz password=securepassword123"
       puts "Example: rake admin:create email=admin@firma.cz password=securepassword123"
@@ -18,14 +18,14 @@ namespace :admin do
         role: :admin,
         confirmed_at: Time.current # Skip email confirmation for admin
       )
-      
+
       puts "✅ Admin user created successfully!"
       puts "   Email: #{admin.email}"
       puts "   Role: #{admin.role}"
       puts "   ID: #{admin.id}"
       puts ""
       puts "The admin can now log in at: http://localhost:3000/uzivatele/prihlaseni"
-      
+
     rescue ActiveRecord::RecordInvalid => e
       puts "❌ Failed to create admin user:"
       e.record.errors.full_messages.each do |error|
@@ -39,9 +39,9 @@ namespace :admin do
   end
 
   desc "List all admin users"
-  task :list => :environment do
+  task list: :environment do
     admins = User.admins.order(:created_at)
-    
+
     if admins.empty?
       puts "No admin users found."
     else
@@ -56,9 +56,9 @@ namespace :admin do
   end
 
   desc "Delete an admin user by email"
-  task :delete => :environment do
-    email = ENV['email']
-    
+  task delete: :environment do
+    email = ENV["email"]
+
     if email.blank?
       puts "Usage: rake admin:delete email=admin@firma.cz"
       puts "Example: rake admin:delete email=admin@firma.cz"
@@ -66,7 +66,7 @@ namespace :admin do
     end
 
     admin = User.admins.find_by(email: email)
-    
+
     if admin.nil?
       puts "❌ Admin user with email '#{email}' not found."
       exit 1
@@ -78,8 +78,8 @@ namespace :admin do
       puts "⚠️  Warning: This admin has created #{debt_count} debt record(s)."
       print "Are you sure you want to delete this admin? (yes/no): "
       confirmation = STDIN.gets.chomp.downcase
-      
-      unless confirmation == 'yes' || confirmation == 'y'
+
+      unless confirmation == "yes" || confirmation == "y"
         puts "Deletion cancelled."
         exit 0
       end
@@ -95,10 +95,10 @@ namespace :admin do
   end
 
   desc "Reset admin password"
-  task :reset_password => :environment do
-    email = ENV['email']
-    new_password = ENV['password']
-    
+  task reset_password: :environment do
+    email = ENV["email"]
+    new_password = ENV["password"]
+
     if email.blank? || new_password.blank?
       puts "Usage: rake admin:reset_password email=admin@firma.cz password=newsecurepassword123"
       puts "Example: rake admin:reset_password email=admin@firma.cz password=newsecurepassword123"
@@ -106,7 +106,7 @@ namespace :admin do
     end
 
     admin = User.admins.find_by(email: email)
-    
+
     if admin.nil?
       puts "❌ Admin user with email '#{email}' not found."
       exit 1
@@ -117,7 +117,7 @@ namespace :admin do
         password: new_password,
         password_confirmation: new_password
       )
-      
+
       puts "✅ Password reset successfully for admin: #{admin.email}"
     rescue ActiveRecord::RecordInvalid => e
       puts "❌ Failed to reset password:"

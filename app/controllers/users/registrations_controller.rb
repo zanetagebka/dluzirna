@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :ensure_admin_for_destroy, only: [:destroy]
+  before_action :ensure_admin_for_destroy, only: [ :destroy ]
 
   def destroy
     Rails.logger.info "Admin user #{current_user.email} deleted account #{resource.email}"
@@ -11,7 +11,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def ensure_admin_for_destroy
     unless current_user&.admin?
-      redirect_to edit_user_registration_path, alert: 'Nemáte oprávnění k zrušení účtu. Kontaktujte administrátora.'
+      redirect_to edit_user_registration_path, alert: "Nemáte oprávnění k zrušení účtu. Kontaktujte administrátora."
     end
   end
 
@@ -25,7 +25,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def build_resource(hash = {})
     # Force all web registrations to be customer role
-    hash[:role] = :customer if action_name == 'create'
+    hash[:role] = :customer if action_name == "create"
     super(hash)
   end
 end

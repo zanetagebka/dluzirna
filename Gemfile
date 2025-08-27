@@ -18,35 +18,35 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Authentication & Authorization
-gem 'devise'
-gem 'cancancan'
+gem "devise"
+gem "cancancan"
 
 # URL Management
-gem 'friendly_id'
+gem "friendly_id"
 
 # UI & Forms
-gem 'bootstrap', '~> 5.2'
-gem 'bootstrap_form'
-gem 'dartsass-rails'
+gem "bootstrap", "~> 5.2"
+gem "bootstrap_form"
+gem "dartsass-rails"
 
 # Localization
-gem 'route_translator'
+gem "route_translator"
 
 # Template Engine
-gem 'haml-rails'
+gem "haml-rails"
 
 # Rich Text Editor - Rails 6+ built-in rich text (already included in Rails 8)
 # gem 'action_text'
 
 # Background Jobs
-gem 'delayed_job_active_record'
-gem 'daemons'
+gem "delayed_job_active_record"
+gem "daemons"
 
 # Security
-gem 'rack-attack'
+gem "rack-attack"
 
 # Pagination
-gem 'kaminari'
+gem "kaminari"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bcrypt", "~> 3.1.7"
@@ -72,8 +72,8 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # Performance & Background Processing
-gem 'bullet', group: :development  # N+1 query detection
-gem 'rack-mini-profiler', group: :development
+gem "bullet", group: :development  # N+1 query detection
+gem "rack-mini-profiler", group: :development
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -83,24 +83,25 @@ group :development, :test do
   gem "brakeman", require: false
 
   # Testing Framework
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
-  gem 'faker'
-  gem 'shoulda-matchers'
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "shoulda-matchers"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  
+
   # Code Quality
-  gem 'rubocop-rails', require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-rails-omakase", require: false
 end
 
 group :test do
   # Code Coverage
-  gem 'simplecov', require: false
-  
+  gem "simplecov", require: false
+
   # Controller Testing
-  gem 'rails-controller-testing'
+  gem "rails-controller-testing"
 end
